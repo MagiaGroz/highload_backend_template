@@ -2,3 +2,4 @@
 .pycache
 .bash
 .idea
+.env
