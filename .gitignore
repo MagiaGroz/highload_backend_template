@@ -3,3 +3,4 @@
 .bash
 .idea
 .env
+__pycache__
