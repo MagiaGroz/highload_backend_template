@@ -1,1 +1,1 @@
-web: gunicorn highload_django.wsgi
+web: cd app && gunicorn highload_django.wsgi
