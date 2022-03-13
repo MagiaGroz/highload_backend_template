@@ -2,7 +2,7 @@ version: '3.7'
 services:
   web:
     build: ./app
-    command: python manage.py runserver 0.0.0.0:5000
+    command: gunicorn highload_django.wsgi -b  0.0.0.0:5000
     volumes:
       - ./app/:/usr/src/app/
     ports:
