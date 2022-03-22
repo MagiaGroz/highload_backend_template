@@ -1,5 +1,4 @@
 from rest_framework.permissions import BasePermission, SAFE_METHODS
-from .serializers import UserProfileSerializer
 
 
 class IsOwnerProfileOrReadOnly(BasePermission):
@@ -8,9 +7,4 @@ class IsOwnerProfileOrReadOnly(BasePermission):
             return True
         if obj.user == request.user:
             return True
-
-        user = UserProfileSerializer(obj.user)
-        if user['is_admin'] is True:
-            return True
-
         return False

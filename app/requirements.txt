@@ -2,5 +2,6 @@ Django==3.2
 psycopg2-binary==2.8.5
 djoser
 djangorestframework_simplejwt
+Pillow
 gunicorn
 django-heroku
