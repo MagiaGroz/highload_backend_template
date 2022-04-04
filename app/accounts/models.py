@@ -1,17 +1,26 @@
 import uuid
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from .managers import UserManager
 
-class UserProfile(models.Model):
+
+class User(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+    username = None
+    email = models.EmailField(db_index=True, unique=True)
     image = models.ImageField(upload_to='images/users/', default=None, null=True)
-    description = models.TextField(blank=True, null=True)
-    location = models.CharField(max_length=30, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True)
+    phone = models.CharField(
+        db_index=True,
+        blank=True,
+        null=True,
+        max_length=20
+    )
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    objects = UserManager()
 
     def __str__(self):
-        return self.user.username
+        return self.email

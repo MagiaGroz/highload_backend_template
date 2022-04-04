@@ -3,6 +3,7 @@ services:
   web:
     build: ./app
     command: gunicorn highload_django.wsgi -b  0.0.0.0:5000
+    restart: always
     volumes:
       - ./app/:/usr/src/app/
     ports:
@@ -16,6 +17,6 @@ services:
     environment:
       - POSTGRES_USER=highload_django
       - POSTGRES_PASSWORD=highload_django
-      - POSTGRES_DB=highload_django_dev
+      - POSTGRES_DB=mereke
 volumes:
   postgres_data:

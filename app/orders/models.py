@@ -1,11 +1,13 @@
 import uuid
 
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.db import models
+
+User = get_user_model()
 
 
 class Category(models.Model):
-    name = models.TextField()
+    name = models.CharField(max_length=200, db_index=True)
 
     def __str__(self):
         return self.name
@@ -36,26 +38,20 @@ class Image(models.Model):
 
 class Order(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    price = models.IntegerField()
+    user = models.ForeignKey(User, related_name='orders', on_delete=models.CASCADE)
+    price = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f'{self.created_at} {self.status}'
 
-    def get_total_cost(self):
-        return sum(item.get_cost() for item in self.items.all())
-
 
 class OrderItem(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, related_name='order_items', on_delete=models.CASCADE)
-    price = models.IntegerField()
     quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):
-        return '{}'.format(self.id)
-
-    def get_cost(self):
-        return self.price * self.quantity
+        return str(self.id)
