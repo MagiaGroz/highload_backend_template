@@ -24,8 +24,8 @@ class OrderViewSet(viewsets.ModelViewSet):
     def get_item_cost(self, item):
         return item.product.price * item.quantity
 
-    def get_total_cost(self):
-        return sum(item.get_cost() for item in self.items.all())
+    def get_total_cost(self, order):
+        return sum(self.get_item_cost(item) for item in order.items.all())
 
     def create(self, request, *args, **kwargs):
         serializer = OrderItemCreateSerializer(data=request.data, many=True)
@@ -33,9 +33,10 @@ class OrderViewSet(viewsets.ModelViewSet):
         order = Order.objects.create(user=request.user)
         for order_item in serializer.data:
             order_item['order_id'] = order.id
-        order_items = serializer.create(serializer.data)
-        print(order.id)
-        print(order_items)
-        print(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        serializer.create(serializer.data)
+        order.price = self.get_total_cost(order)
+        order.save()
+
+        return Response(self.serializer_class(order).data, status=status.HTTP_201_CREATED)
 
