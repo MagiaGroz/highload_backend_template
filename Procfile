@@ -1,1 +1,1 @@
-web: cd app && gunicorn highload_django.wsgi
+web: cd app && gunicorn --workers=4 highload_django.wsgi

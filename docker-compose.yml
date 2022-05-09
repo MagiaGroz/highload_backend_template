@@ -2,14 +2,13 @@ version: '3.7'
 services:
   web:
     build: ./app
-    command: gunicorn highload_django.wsgi -b  0.0.0.0:4000
-    restart: always
+    command: python manage.py runserver 0.0.0.0:4000
     volumes:
       - ./app/:/usr/src/app/
     ports:
       - 4000:4000
     env_file:
-      - ./.env.dev
+      - .env.dev
   db:
     image: postgres:12.0-alpine
     volumes:
