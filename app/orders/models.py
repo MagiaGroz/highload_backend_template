@@ -23,6 +23,14 @@ class Product(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.SET_NULL,
                                  null=True)
     executor = models.ForeignKey(User, related_name='products', on_delete=models.CASCADE)
+    address = models.CharField(max_length=100, blank=True, null=True)
+    kitchen = models.CharField(max_length=100, blank=True, null=True)
+    average_check = models.CharField(max_length=100, blank=True, null=True)
+    place_quantity = models.IntegerField(null=True)
+    work_time = models.CharField(max_length=100, blank=True, null=True)
+    has_karaoke = models.BooleanField(default=False)
+    has_smoking_area = models.BooleanField(default=False)
+    parking_area = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return self.name
